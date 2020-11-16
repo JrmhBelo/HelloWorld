@@ -102,25 +102,76 @@ public class JavaTesterController {
         return Max;
     }
 
-     
-    
+
+    @GetMapping(path = "/matchingrade", produces = MediaType.APPLICATION_JSON_VALUE)   
+    public double matchinGrade(){
+        String name = units.get(units.size()-1).getName();      
+        double finalGrade = 0;
+        for(int i=0; i < units.size(); i++)
+            if(units.get(i).getName().equals(name)){
+                finalGrade = units.get(i).getGrade();
+            }
+        return finalGrade;
+    }
+
+
+    @GetMapping(path = "/guessGrade",produces = MediaType.APPLICATION_JSON_VALUE) 
+    public double guessGrade() {                 
+        String name;                             
+        name = "BD";
+        int position = 0;
+        for(int i=0; i<ucs.length; i = i + 1) {
+            if (ucs[i].equals(name)) {
+                position = i;
+                break;
+            }
+        }
+        double gradeFinal = grades[position];
+        return gradeFinal;
+    }
+
+
+    @GetMapping(path = "/limits", produces = MediaType.APPLICATION_JSON_VALUE)     
+    public int limits() {
+        double min = 9.5;
+        double max = 14;
+        int times = 0;
+        for(int i=0; i<grades.length; i = i + 1) {
+            if (grades[i] > min && grades[i] < max){
+                times = times + 1;
+            }
+        }
+    return times;
+    }
+
+
+    @GetMapping(path = "/textstring", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String textstring() {
+        String text = "";
+        for(int i = 0; i < ucs.length; i = i + 1) {
+            text += ucs[i] + ":" + grades[i] + "\n";
+        }
+        return text;
+    }
+
+
 ///////////////////////////////////////////////////////////////////////UNITS/////////////////////////////////////////////////////////////////////
 
 
-        @PostMapping(path = "/units")
+    @PostMapping(path = "/units")
     public CurricularUnit saveUnit(@RequestBody CurricularUnit unit) {
         logger.info("Added unit "+unit.getName());
         units.add(unit);
         return unit;
     }
     
+
     @GetMapping(path = "/units",
     produces= MediaType.APPLICATION_JSON_VALUE)
     public ArrayList<CurricularUnit> getUnits() {
         logger.info("Get "+units.size()+" Units");
         return units;
     } 
-
 
 }
 
@@ -172,6 +223,8 @@ public class JavaTesterController {
 
 //mvnw spring-boot:run
 //localhost:8080/api/java/tester/author
-//
-//http://localhost:8080/saveUnit.html
-//http://localhost:8080/api/java/tester/units
+//localhost:8080/api/java/tester/average
+//localhost:8080/api/java/tester/max
+//localhost:8080/api/java/tester/grade
+//localhost:8080/saveUnit.html
+//localhost:8080/api/java/tester/units
