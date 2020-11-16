@@ -173,58 +173,63 @@ public class JavaTesterController {
         return units;
     } 
 
+
+
+    @GetMapping(path = "/calcaverage", produces= MediaType.APPLICATION_JSON_VALUE)
+    public double calcAverage() {
+        double credits = 0;
+        double total = 0;
+        for(int i = 0; i < units.size(); i = i + 1) {
+            total += units.get(i).getGrade() * units.get(i).getEcts();
+            credits += units.get(i).getEcts();
+        }
+        return total/credits; 
+    }
+
+    @GetMapping(path = "/calcmax", produces = MediaType.APPLICATION_JSON_VALUE)
+    public double calcMax() {
+        double max = 0;
+        for(int i = 0; i < units.size(); i = i + 1)
+            if(units.get(i).getGrade() > max){
+                max = units.get(i).getGrade();
+            }
+        return max;
+    }
+
+    @GetMapping(path = "/calcgrade", produces = MediaType.APPLICATION_JSON_VALUE)
+    public double calcGrade() {
+        String name = units.get(units.size()-1).getName();      
+        double finalGrade = 0;
+        for(int i = 0; i < units.size(); i = i + 1)
+            if(units.get(i).getName().equals(name)){
+                finalGrade = units.get(i).getGrade();
+            }
+        return finalGrade;
+    }
+
+    @GetMapping(path = "/calcsemester", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String calcSemester() {
+        int givenSemester = 3;                          
+        String finalUcs = "";
+        for(int i = 0; i < units.size(); i = i + 1)
+            if(units.get(i).getSemester() == givenSemester){
+                finalUcs += units.get(i).getName() + " ";
+            }
+        return finalUcs;
+    }
+
+    @GetMapping(path = "/calclimit", produces = MediaType.APPLICATION_JSON_VALUE)
+    public int calcLimit() {
+        double min = 9.5;                                       
+        double max = 14;
+        int numberOutput = 0;
+        for(int i = 0; i < units.size(); i = i + 1)
+            if(units.get(i).getGrade() > min && units.get(i).getGrade() < max){
+                numberOutput += 1;
+            }
+        return numberOutput;
+    }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//mvnw spring-boot:run
-//localhost:8080/api/java/tester/author
-//localhost:8080/api/java/tester/average
-//localhost:8080/api/java/tester/max
-//localhost:8080/api/java/tester/grade
-//localhost:8080/saveUnit.html
-//localhost:8080/api/java/tester/units
+////////////////////////////////////////////////////////////////////mvnw spring-boot:run//////////////////////////////////////////////////////////
